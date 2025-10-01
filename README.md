@@ -1,4 +1,4 @@
-# Laboratorio 3 - Problema del Coctel 
+# Laboratorio 3 
 **Universidad Militar Nueva Granada**  
 **Asignatura:** Laboratorio de Procesamiento Digital de Señales  
 **Estudiantes:** [Maria Jose Peña Velandia, Joshara Valentina Palacios, Lina Marcela Pabuena]  
