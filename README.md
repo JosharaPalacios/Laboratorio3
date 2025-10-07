@@ -360,6 +360,11 @@ En cuanto a la intensidad, los resultados muestran que las voces masculinas tien
 
 # PARTE C
 
+<img width="611" height="134" alt="image" src="https://github.com/user-attachments/assets/1eb7d1a2-6863-4bf5-814a-94a183fd9fd9" />
+
+
+ 
+
 # DIAGRAMAS DE FLUJO
 ![Imagen de WhatsApp 2025-10-06 a las 20 50 49_44e49ca4](https://github.com/user-attachments/assets/1ba2eed7-21f3-439b-80d4-f76dd27afe24)
 
