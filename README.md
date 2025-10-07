@@ -357,6 +357,178 @@ print("Intensidad promedio:", I)
 </pre>
 En cuanto a la intensidad, los resultados muestran que las voces masculinas tienen valores promedio más altos (entre 24 y 35 millones) en comparación con las femeninas (entre 19 y 21 millones). Esto refleja una diferencia esperada, ya que las voces de los hombres suelen producir mayor potencia acústica debido a la mayor masa de sus pliegues vocales y a una proyección más grave y resonante. No obstante, los valores de las mujeres también se mantienen en un rango considerable, lo que indica buena claridad y presencia vocal.
 # PARTE B
+En esta segunda parte del análisis, se busca evaluar la estabilidad temporal y de amplitud de las señales de voz previamente grabadas en la Parte A. Para ello, se calculan dos parámetros acústicos fundamentales en el estudio de la calidad vocal: Jitter y Shimmer.
+
+#### Filtro pasa-banda para Mujer 1 y Hombre 1
+<pre>
+  # =======================
+# PARTE B – Filtro pasa banda para voz (Hombre / Mujer)
+# =======================
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.io import wavfile
+from scipy.signal import butter, filtfilt
+from google.colab import drive
+import os
+
+# === 1. Montar Google Drive ===
+drive.mount('/content/drive')
+
+# === 2. Ruta a los audios (ajusta si están en otra carpeta) ===
+ruta = '/content/drive/MyDrive/Audios/'  # <- cambia por tu carpeta
+
+# === 3. Función para crear y aplicar filtro pasa banda ===
+def filtro_pasabanda(data, fs, lowcut, highcut):
+    nyq = 0.5 * fs
+    low = lowcut / nyq
+    high = highcut / nyq
+    b, a = butter(4, [low, high], btype='band')
+    filtrada = filtfilt(b, a, data)
+    return filtrada
+
+# === 4. Función para procesar un archivo de voz ===
+def procesar_voz(nombre_archivo, tipo):
+    fs, data = wavfile.read(ruta + nombre_archivo)
+    if data.ndim > 1:
+        data = data[:, 0]  # solo canal izquierdo si es estéreo
+    data = data.astype(np.float32)
+
+    # Rango del filtro según el tipo de voz
+    if tipo == 'hombre':
+        lowcut, highcut = 80, 400
+    else:  # mujer
+        lowcut, highcut = 150, 500
+
+    # Filtrado
+    filtrada = filtro_pasabanda(data, fs, lowcut, highcut)
+
+    # === 5. Gráficas ===
+    t = np.linspace(0, len(data) / fs, len(data))
+    plt.figure(figsize=(12,4))
+    plt.plot(t, data, label='Original', alpha=0.5)
+    plt.plot(t, filtrada, label='Filtrada', linewidth=1.2)
+    plt.title(f'Señal original vs filtrada ({tipo})')
+    plt.xlabel('Tiempo [s]')
+    plt.ylabel('Amplitud')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+    # Retorna la señal filtrada
+    return fs, filtrada
+
+# === 6. Procesar una voz de hombre y una de mujer ===
+fs_h, voz_h = procesar_voz('Hombre_1.wav', 'hombre')
+fs_m, voz_m = procesar_voz('Mujer_1.wav', 'mujer')
+  </pre>
+  
+Tras aplicar el filtro pasa-banda a las grabaciones de Mujer 1 y Hombre 1, se observó una señal de voz más limpia y estable dentro del rango de frecuencias correspondiente a cada género. En el caso de la voz femenina, el filtro de 150 a 500 Hz permitió conservar las componentes fundamentales y los primeros armónicos característicos del tono agudo, eliminando eficazmente ruidos de baja frecuencia. Para la voz masculina, el filtro de 80 a 400 Hz mantuvo la energía principal de la señal en el rango grave típico, suprimiendo las frecuencias altas que no pertenecen al habla natural. Este proceso garantizó una base adecuada para el posterior cálculo de los parámetros de Jitter y Shimmer, asegurando que las mediciones reflejaran con precisión las variaciones propias de la fonación y no el ruido ambiental.
+
+<img width="775" height="293" alt="image" src="https://github.com/user-attachments/assets/307e2c8d-b9ec-4789-817e-a1b1bbc30db9" />
+<img width="1546" height="581" alt="image" src="https://github.com/user-attachments/assets/3b58bb9f-7d64-4146-8ff9-47faf7e44988" />
+
+#### Jitter y Shimmer
+
+Una vez filtradas las señales y aislada la porción más representativa de cada grabación, se procede al análisis de estabilidad de la voz mediante el cálculo de los parámetros Jitter y Shimmer. Estos indicadores permiten cuantificar las variaciones que ocurren entre ciclos consecutivos de vibración de las cuerdas vocales, tanto en frecuencia como en amplitud. El Jitter evalúa las fluctuaciones en el periodo fundamental (tiempo entre ciclos), mientras que el Shimmer mide los cambios en la intensidad de la señal. A partir de estos valores, es posible determinar el nivel de control y uniformidad en la producción vocal, comparando los resultados entre voces masculinas y femeninas para identificar diferencias fisiológicas y de estabilidad acústica.
+
+#### Jitter
+El Jitter representa la variación en la frecuencia fundamental entre ciclos consecutivos de vibración de las cuerdas vocales. Un valor bajo de jitter indica una producción vocal estable, mientras que valores elevados reflejan irregularidades en la vibración (frecuentemente asociadas con fatiga o patología vocal).
+
+#### Shimmer
+El Shimmer, por su parte, cuantifica la variación en la amplitud de los ciclos sucesivos de la onda sonora. De manera similar, amplitudes más uniformes (bajo shimmer) indican una voz más controlada y estable.
+<pre>
+
+# Jitter y Shimmer
+import numpy as np
+from scipy.signal import find_peaks
+
+# --- Función para calcular Jitter y Shimmer ---
+def calcular_jitter_shimmer(data, fs):
+    # === 1. Detección de picos de vibración ===
+    # Picos positivos (fundamentales)
+    peaks, _ = find_peaks(data, height=np.mean(data), distance=fs/400)  # evita detectar armónicos falsos
+
+    # Si hay muy pocos picos, abortar
+    if len(peaks) < 3:
+        return np.nan, np.nan, np.nan, np.nan
+
+    # === 2. Calcular periodos Ti ===
+    Ti = np.diff(peaks) / fs  # en segundos
+
+    # === 3. Calcular amplitudes Ai ===
+    Ai = data[peaks]
+
+    # === 4. Jitter absoluto y relativo ===
+    jitter_abs = np.mean(np.abs(np.diff(Ti)))
+    jitter_rel = (jitter_abs / np.mean(Ti)) * 100
+
+    # === 5. Shimmer absoluto y relativo ===
+    shimmer_abs = np.mean(np.abs(np.diff(Ai)))
+    shimmer_rel = (shimmer_abs / np.mean(Ai)) * 100
+
+    return jitter_abs, jitter_rel, shimmer_abs, shimmer_rel
+
+# --- Procesar las 6 grabaciones (3 hombres y 3 mujeres) ---
+nombres_hombres = ['Hombre_1.wav', 'Hombre_2.wav', 'Hombre_3.wav']
+nombres_mujeres = ['Mujer_1.wav', 'Mujer_2.wav', 'Mujer_3.wav']
+
+resultados = []
+
+for archivo in nombres_hombres:
+    fs, data = wavfile.read(ruta + archivo)
+    if data.ndim > 1:
+        data = data[:,0]
+    data = data.astype(np.float32)
+
+    # Filtrar
+    data_f = filtro_pasabanda(data, fs, 80, 400)
+
+    # Calcular Jitter y Shimmer
+    jitter_abs, jitter_rel, shimmer_abs, shimmer_rel = calcular_jitter_shimmer(data_f, fs)
+
+    resultados.append({
+        'Archivo': archivo,
+        'Género': 'Hombre',
+        'Jitter_abs': jitter_abs,
+        'Jitter_rel(%)': jitter_rel,
+        'Shimmer_abs': shimmer_abs,
+        'Shimmer_rel(%)': shimmer_rel
+    })
+
+for archivo in nombres_mujeres:
+    fs, data = wavfile.read(ruta + archivo)
+    if data.ndim > 1:
+        data = data[:,0]
+    data = data.astype(np.float32)
+
+    # Filtrar
+    data_f = filtro_pasabanda(data, fs, 150, 500)
+
+    # Calcular Jitter y Shimmer
+    jitter_abs, jitter_rel, shimmer_abs, shimmer_rel = calcular_jitter_shimmer(data_f, fs)
+
+    resultados.append({
+        'Archivo': archivo,
+        'Género': 'Mujer',
+        'Jitter_abs': jitter_abs,
+        'Jitter_rel(%)': jitter_rel,
+        'Shimmer_abs': shimmer_abs,
+        'Shimmer_rel(%)': shimmer_rel
+    })
+
+# --- Mostrar resultados en tabla ---
+import pandas as pd
+
+tabla = pd.DataFrame(resultados)
+print("\n=== Resultados de Jitter y Shimmer ===")
+display(tabla)
+</pre>
+
+Al analizar los resultados obtenidos, se observa que las **voces masculinas** presentan valores de **Jitter absoluto** ligeramente superiores (entre *0.0010 y 0.0019 s*) y **Jitter relativo** de alrededor de *28 % a 40 %*, lo cual refleja una mayor variabilidad en la frecuencia fundamental entre ciclos. En contraste, las **voces femeninas** presentan **Jitter absoluto más bajo** (entre *0.0008 y 0.0011 s*) y valores relativos entre *20 % y 25 %*, indicando una vibración más estable y regular.
+En cuanto al **Shimmer**, las voces masculinas muestran valores absolutos y relativos más altos (hasta *96 %* en algunos casos), lo que sugiere **mayores fluctuaciones en la amplitud**, posiblemente asociadas a una emisión más intensa y a un control menos uniforme de la potencia vocal. Las voces femeninas, por su parte, presentan un **Shimmer menor** (entre *16 % y 35 %*), evidenciando una **amplitud más constante** y un **mejor control en la emisión**.
+En general, estos resultados se encuentran dentro de rangos esperados para voces normales y confirman la tendencia fisiológica de que las voces femeninas presentan **mayor estabilidad temporal (menor jitter)**, mientras que las masculinas suelen mostrar **mayor variación en amplitud (mayor shimmer)** debido a diferencias en tono y esfuerzo vocal.
+
+<img width="938" height="351" alt="image" src="https://github.com/user-attachments/assets/9c714d68-2450-4c57-ba7d-6f6f9ab00ab1" />
 
 # PARTE C
 <img width="611" height="134" alt="image" src="https://github.com/user-attachments/assets/1eb7d1a2-6863-4bf5-814a-94a183fd9fd9" />
