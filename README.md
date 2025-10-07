@@ -364,6 +364,14 @@ En cuanto a la intensidad, los resultados muestran que las voces masculinas tien
 ### ¿Qué diferencias se observan en la frecuencia fundamental?  
 La diferencia más grande que se observa en la frecuencia fundamental entre voces masculinas y femeninas es el rango en el que se encuentran: la frecuencia fundamental de las mujeres está entre 232 Hz y 291 Hz, mientras que la de los hombres es mucho más baja, ubicándose entre 112 Hz y 137 Hz. Esta diferencia refleja las distintas longitudes y la fisiologia de las cuerdas vocales, ya que las masculinas son más gruesas y, por lo tanto, vibran más lentamente, generando frecuencias más bajas que las femeninas. 
 
+###¿Qué otras diferencias notan en términos de brillo, media o intensidad? 
+
+Frecuencia media: Las mujeres presentan una frecuencia media ligeramente más alta (1168 – 1386 Hz) en comparación con los hombres (1007 – 1150 Hz), lo que indica que la concentración promedio de energia en las voces femeninas se encuentra levemente desplazada hacia valores superiores. 
+
+Brillo: El brillo es bastante similar entre ambos géneros, pero las mujeres tienen un valor apenas superior (2675 – 2790 Hz frente a 2556 – 2762 Hz en hombres), lo cual se relaciona con los rangos de brillo característicos de cada voz. 
+
+Intensidad (energía): La diferencia más significativa es que los hombres muestran una intensidad promedio considerablemente mayor (24M – 35M) que las mujeres (19M – 22M). Esto implica que la energía total de la señal de voz es más alta en los hombres, lo que se traduce en un volumen percibido mayor o una amplitud de señal superior. 
+
  
 
 # DIAGRAMAS DE FLUJO
