@@ -579,5 +579,8 @@ En conjunto, ambos parámetros son biomarcadores útiles para la detección temp
 # DIAGRAMAS DE FLUJO
 ![Imagen de WhatsApp 2025-10-06 a las 20 50 49_44e49ca4](https://github.com/user-attachments/assets/1ba2eed7-21f3-439b-80d4-f76dd27afe24)
 
+<img width="703" height="859" alt="image" src="https://github.com/user-attachments/assets/7f976b70-f1e6-48ee-877a-8adf8438d7d9" />
+
+
 
 
