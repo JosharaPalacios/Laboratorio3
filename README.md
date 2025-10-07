@@ -8,3 +8,5 @@
 - Aplicar el análisis en frecuencia de señales de voz en un problema de captura de señales mezcladas.}
 ## Desarrollo 
 
+
+## PARTE C
