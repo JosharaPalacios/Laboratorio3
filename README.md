@@ -544,7 +544,38 @@ Brillo: El brillo es bastante similar entre ambos géneros, pero las mujeres tie
 
 Intensidad (energía): La diferencia más significativa es que los hombres muestran una intensidad promedio considerablemente mayor (24M – 35M) que las mujeres (19M – 22M). Esto implica que la energía total de la señal de voz es más alta en los hombres, lo que se traduce en un volumen percibido mayor o una amplitud de señal superior. 
 
- 
+ ### Tabla comparativa de parámetros vocales
+ <img width="861" height="426" alt="image" src="https://github.com/user-attachments/assets/732d4f19-9204-4b59-b6a2-f575b424db6f" />
+
+ ### Conclusiones sobre el comportamiento vocal en hombres y mujeres
+
+- Las voces femeninas se caracterizan por frecuencias fundamentales y medias más agudas, acompañadas de una vibración más rápida de las cuerdas vocales y un tono más agudo.
+
+- Las voces masculinas se caracterizan por una mayor intensidad y energía vocal, debido a una estructura laríngea más robusta y cuerdas vocales más grandes, que generan un tono más profundo y potente.
+
+- En cuanto al brillo, las mujeres tienden a mostrar un espectro más rico en frecuencias agudas, mientras que la energía de los hombres predomina en frecuencias graves.
+
+- Estos hallazgos confirman que las diferencias espectrales entre los sexos están directamente relacionadas con la anatomía del tracto vocal y que el análisis digital de audio permite cuantificar estas diferencias fisiológicas.
+
+- El uso de herramientas de procesamiento digital, como la transformada de Fourier, es esencial para los estudios biomédicos del habla, la detección de cambios y el análisis comparativo entre individuos.
+ ### Importancia clínica del Jitter y Shimmer 
+
+El Jitter y el Shimmer son parámetros clínicos esenciales para evaluar la estabilidad vocal. 
+
+- El Jitter mide las variaciones en la frecuencia fundamental entre ciclos consecutivos. 
+
+- Valores bajos indican una fonación estable. 
+
+- Valores altos (mayores al 1 %) pueden sugerir inestabilidad o alteraciones neuromusculares en las cuerdas vocales. 
+
+- El Shimmer cuantifica las fluctuaciones en la amplitud. 
+
+- Valores normales suelen estar por debajo del 3–5 %. 
+
+- Incrementos pueden reflejar lesiones, fatiga vocal o dificultades en el control de la presión subglótica. 
+
+En conjunto, ambos parámetros son biomarcadores útiles para la detección temprana de patologías laríngeas, la evaluación postquirúrgica o el seguimiento terapéutico en pacientes con trastornos de la voz. 
+ Su análisis complementa la información espectral y aporta una visión más completa del comportamiento dinámico de la fonación. 
 
 # DIAGRAMAS DE FLUJO
 ![Imagen de WhatsApp 2025-10-06 a las 20 50 49_44e49ca4](https://github.com/user-attachments/assets/1ba2eed7-21f3-439b-80d4-f76dd27afe24)
